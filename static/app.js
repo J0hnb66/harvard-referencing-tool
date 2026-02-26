@@ -1,6 +1,5 @@
 let currentSourceType = null;
 let referenceList = [];
-let history = [];
 
 // Field definitions for each source type
 const fieldDefinitions = {
@@ -13,23 +12,50 @@ const fieldDefinitions = {
         { id: "publisher", label: "Publisher" }
     ],
     journal: [
-        { id: "author", label: "Author" },
+        { id: "author", label: "Author(s)" },
         { id: "year", label: "Year" },
         { id: "title", label: "Article Title" },
         { id: "journal", label: "Journal Title" },
         { id: "volume", label: "Volume" },
         { id: "issue", label: "Issue" },
-        { id: "pages", label: "Pages" }
+        { id: "pages", label: "Pages" },
+
+        // Optional fields
+        { id: "doi", label: "DOI (optional)", optional: true },
+        { id: "url", label: "URL (optional)", optional: true },
+        { id: "accessed", label: "Accessed Date (optional)", optional: true }
     ],
+
     website: [
-        { id: "author", label: "Author" },
+        { id: "author", label: "Author(s)" },
         { id: "year", label: "Year" },
         { id: "title", label: "Title" },
         { id: "website_name", label: "Website Name" },
-        { id: "url", label: "URL" },
-        { id: "accessed", label: "Accessed Date" }
+        { id: "url", label: "Paste full URL" },
+        { id: "accessed", label: "Date of access (current date unless changed)" }
     ]
 };
+
+
+// ------------------------------
+// AUTO-FORMATTING HELPERS
+// ------------------------------
+function autoCapitaliseTitle(str) {
+    if (!str) return "";
+    return str.replace(/\b\w+/g, word =>
+        word.charAt(0).toUpperCase() + word.slice(1)
+    );
+}
+
+function autoFixPunctuation(str) {
+    if (!str) return "";
+    return str
+        .replace(/\.\./g, ".")
+        .replace(/,,/g, ",")
+        .replace(/:\./g, ":")
+        .replace(/\s+\./g, ".")
+        .replace(/\s+,/g, ",");
+}
 
 
 // ------------------------------
@@ -39,16 +65,44 @@ function renderFormFields(type) {
     const container = document.getElementById("form-fields");
     container.innerHTML = "";
 
+    const hasOptional = fieldDefinitions[type].some(f => f.optional);
+
+    let toggle = null;
+    if (hasOptional) {
+        toggle = document.createElement("button");
+        toggle.textContent = "Show optional fields";
+        toggle.className = "action-btn optional-toggle";
+        toggle.dataset.open = "false";
+        container.appendChild(toggle);
+    }
+
+    const fieldsWrapper = document.createElement("div");
+    fieldsWrapper.id = "fields-wrapper";
+    container.appendChild(fieldsWrapper);
+
     fieldDefinitions[type].forEach(field => {
         const wrapper = document.createElement("div");
+        wrapper.className = field.optional ? "optional-field hidden" : "field";
 
         wrapper.innerHTML = `
             <label>${field.label}</label>
             <input type="text" id="${field.id}" />
         `;
 
-        container.appendChild(wrapper);
+        fieldsWrapper.appendChild(wrapper);
     });
+
+    if (toggle) {
+        toggle.addEventListener("click", () => {
+            const isOpen = toggle.dataset.open === "true";
+            toggle.dataset.open = isOpen ? "false" : "true";
+            toggle.textContent = isOpen ? "Show optional fields" : "Hide optional fields";
+
+            document.querySelectorAll(".optional-field").forEach(el => {
+                el.classList.toggle("hidden");
+            });
+        });
+    }
 }
 
 
@@ -61,6 +115,24 @@ async function generateReference() {
     const fields = {};
     fieldDefinitions[currentSourceType].forEach(f => {
         fields[f.id] = document.getElementById(f.id).value;
+    });
+
+    Object.keys(fields).forEach(id => {
+        clearTimeout(window._formatTimer);
+        window._formatTimer = setTimeout(() => {
+            const inputEl = document.getElementById(id);
+            if (!inputEl) return;
+
+            let v = inputEl.value;
+            v = v.replace(/\s{2,}/g, " ");
+
+            if (id === "title") v = autoCapitaliseTitle(v);
+            if (["title", "author", "journal", "website_name", "publisher", "place"].includes(id))
+                v = autoFixPunctuation(v);
+
+            inputEl.value = v;
+            fields[id] = v;
+        }, 400);
     });
 
     const output = document.getElementById("reference-output");
@@ -91,7 +163,7 @@ async function generateReference() {
 
 
 // ------------------------------
-// BUTTON HANDLING (Book / Journal / Website)
+// SOURCE BUTTONS
 // ------------------------------
 function setupSourceButtons() {
     const buttons = document.querySelectorAll(".source-btn");
@@ -115,15 +187,13 @@ function setupSourceButtons() {
 
 
 // ------------------------------
-// ACTION BUTTONS (Copy, Clear, Add to List)
+// ACTION BUTTONS
 // ------------------------------
 function setupActionButtons() {
     const copyBtn = document.getElementById("copy-btn");
     const clearBtn = document.getElementById("clear-btn");
     const addBtn = document.getElementById("add-btn");
-    const clearHistoryBtn = document.getElementById("clear-history-btn");
 
-    // Copy rich text so Word keeps italics
     copyBtn.addEventListener("click", () => {
         const output = document.getElementById("reference-output");
 
@@ -135,11 +205,9 @@ function setupActionButtons() {
         selection.addRange(range);
 
         document.execCommand("copy");
-
         selection.removeAllRanges();
     });
 
-    // Clear all fields
     clearBtn.addEventListener("click", () => {
         if (!currentSourceType) return;
 
@@ -151,7 +219,6 @@ function setupActionButtons() {
             "<em>Your formatted reference will appear here.</em>";
     });
 
-    // Add to reference list AND history (user-controlled)
     addBtn.addEventListener("click", () => {
         const previewEl = document.getElementById("reference-output");
         const htmlRef = previewEl.innerHTML;
@@ -159,88 +226,95 @@ function setupActionButtons() {
 
         if (textRef === "" || textRef.includes("appear here")) return;
 
-        // Store HTML in referenceList so formatting is preserved
         if (!referenceList.includes(htmlRef)) {
             referenceList.push(htmlRef);
-            referenceList.sort((a, b) =>
-                a.replace(/<[^>]+>/g, "").localeCompare(b.replace(/<[^>]+>/g, ""))
-            );
-        }
-
-        // Add to history (HTML version)
-        if (!history.includes(htmlRef)) {
-            history.push(htmlRef);
-            if (history.length > 50) history.shift();
-            localStorage.setItem("history", JSON.stringify(history));
         }
 
         renderReferenceList();
-        renderHistory();
-    });
-
-    // Clear history
-    clearHistoryBtn.addEventListener("click", () => {
-        history = [];
-        localStorage.removeItem("history");
-        renderHistory();
     });
 }
 
 
 // ------------------------------
-// RENDER REFERENCE LIST
+// COPY ALL REFERENCES
+// ------------------------------
+function setupCopyAllButton() {
+    const btn = document.getElementById("copy-all-btn");
+    if (!btn) return;
+
+    btn.addEventListener("click", () => {
+        if (referenceList.length === 0) return;
+
+        const htmlBlock = referenceList.map(ref => `<p>${ref}</p>`).join("");
+
+        const temp = document.createElement("div");
+        temp.innerHTML = htmlBlock;
+        document.body.appendChild(temp);
+
+        const range = document.createRange();
+        range.selectNodeContents(temp);
+
+        const selection = window.getSelection();
+        selection.removeAllRanges();
+        selection.addRange(range);
+
+        document.execCommand("copy");
+
+        selection.removeAllRanges();
+        document.body.removeChild(temp);
+    });
+}
+
+
+// ------------------------------
+// SINGLE COMBINED REFERENCE LIST
 // ------------------------------
 function renderReferenceList() {
     const container = document.getElementById("reference-list");
     container.innerHTML = "";
 
+    // Alphabetise by plain text (strip HTML tags)
+    referenceList.sort((a, b) =>
+        a.replace(/<[^>]+>/g, "").localeCompare(b.replace(/<[^>]+>/g, ""))
+    );
+
     referenceList.forEach((ref, index) => {
         const div = document.createElement("div");
-        div.innerHTML = `${index + 1}. ${ref}`;
-        container.appendChild(div);
-    });
-}
+        div.className = "reference-item";
 
-
-// ------------------------------
-// RENDER HISTORY
-// ------------------------------
-function renderHistory() {
-    const box = document.getElementById("history-box");
-    box.innerHTML = "";
-
-    history.forEach((ref, index) => {
-        const div = document.createElement("div");
-        div.className = "history-item";
-
+        // Reference text (click to restore)
         const textSpan = document.createElement("span");
-        textSpan.className = "history-text";
+        textSpan.className = "reference-text";
         textSpan.innerHTML = ref;
 
         textSpan.addEventListener("click", () => {
             document.getElementById("reference-output").innerHTML = ref;
         });
 
+        // Delete button (aligned right)
         const del = document.createElement("span");
-        del.className = "history-delete";
+        del.className = "reference-delete";
         del.textContent = "×";
 
         del.addEventListener("click", (event) => {
             event.stopPropagation();
-            history.splice(index, 1);
-            localStorage.setItem("history", JSON.stringify(history));
-            renderHistory();
+            referenceList.splice(index, 1);
+            localStorage.setItem("referenceList", JSON.stringify(referenceList));
+            renderReferenceList();
         });
 
         div.appendChild(textSpan);
         div.appendChild(del);
-        box.appendChild(div);
+        container.appendChild(div);
     });
+
+    localStorage.setItem("referenceList", JSON.stringify(referenceList));
 }
 
 
+
 // ------------------------------
-// DOWNLOAD BUTTON (FORMATTED, USER-FRIENDLY)
+// DOWNLOAD BUTTON
 // ------------------------------
 function setupDownloadButton() {
     const btn = document.getElementById("download-btn");
@@ -267,6 +341,8 @@ function setupDownloadButton() {
                     }
                     p {
                         margin: 0 0 12px 0;
+                        text-indent: -20px;
+                        margin-left: 20px;
                     }
                 </style>
             </head>
@@ -295,13 +371,14 @@ function setupDownloadButton() {
 // ------------------------------
 document.addEventListener("DOMContentLoaded", () => {
 
-    const savedHistory = localStorage.getItem("history");
-    if (savedHistory) {
-        history = JSON.parse(savedHistory);
-        renderHistory();
+    const saved = localStorage.getItem("referenceList");
+    if (saved) {
+        referenceList = JSON.parse(saved);
+        renderReferenceList();
     }
 
     setupSourceButtons();
     setupActionButtons();
     setupDownloadButton();
+    setupCopyAllButton();
 });

@@ -4,8 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4ee72359-d157-4211-a528-5aa24299c747" name="Changes" comment="">
+    <list default="true" id="4ee72359-d157-4211-a528-5aa24299c747" name="Changes" comment="Initial commit of Harvard referencing tool Flask version">
+      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/readme.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/formatters/journal_formatter.py" beforeDir="false" afterPath="$PROJECT_DIR$/formatters/journal_formatter.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/formatters/website_formatter.py" beforeDir="false" afterPath="$PROJECT_DIR$/formatters/website_formatter.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/app.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/static/style.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/index.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -23,18 +30,18 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "J0hnb66"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;J0hnb66&quot;
   }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/J0hnb66/harvard-referencing-tool.git",
-    "accountId": "40184dc9-5773-46df-8bb5-ae3e46d31bd4"
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/J0hnb66/harvard-referencing-tool.git&quot;,
+    &quot;accountId&quot;: &quot;40184dc9-5773-46df-8bb5-ae3e46d31bd4&quot;
   }
-}]]></component>
+}</component>
   <component name="McpProjectServerCommands">
     <commands />
     <urls />
@@ -122,11 +129,27 @@
       <option name="presentableId" value="Default" />
       <updated>1771841714836</updated>
       <workItem from="1771841715909" duration="23781000" />
+      <workItem from="1772109248056" duration="5820000" />
+      <workItem from="1772125491685" duration="4000" />
+      <workItem from="1772125508253" duration="120000" />
     </task>
+    <task id="LOCAL-00001" summary="Initial commit of Harvard referencing tool Flask version">
+      <option name="closed" value="true" />
+      <created>1772026492049</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1772026492049</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Initial commit of Harvard referencing tool Flask version" />
+    <option name="LAST_COMMIT_MESSAGE" value="Initial commit of Harvard referencing tool Flask version" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -140,7 +163,7 @@
     </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/Harvard_Referencing_Flask$FlaskApp.coverage" NAME="FlaskApp Coverage Results" MODIFIED="1772023709487" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Harvard_Referencing_Flask$FlaskApp.coverage" NAME="FlaskApp Coverage Results" MODIFIED="1772125513986" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Harvard_Referencing_Flask$app.coverage" NAME="app Coverage Results" MODIFIED="1772022418494" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>
