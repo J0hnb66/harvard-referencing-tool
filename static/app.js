@@ -37,9 +37,8 @@ const fieldDefinitions = {
 };
 
 
-// ------------------------------
-// AUTO-FORMATTING HELPERS
-// ------------------------------
+//AUTO-FORMATTING HELPERS//
+
 function autoCapitaliseTitle(str) {
     if (!str) return "";
     return str.replace(/\b\w+/g, word =>
@@ -58,9 +57,8 @@ function autoFixPunctuation(str) {
 }
 
 
-// ------------------------------
-// BUILD FORM FIELDS
-// ------------------------------
+//  BUILD FORM FIELDS //
+
 function renderFormFields(type) {
     const container = document.getElementById("form-fields");
     container.innerHTML = "";
@@ -106,9 +104,8 @@ function renderFormFields(type) {
 }
 
 
-// ------------------------------
-// SEND DATA TO FLASK (PREVIEW ONLY)
-// ------------------------------
+// SEND DATA TO FLASK // ---
+
 async function generateReference() {
     if (!currentSourceType) return;
 
@@ -162,9 +159,8 @@ async function generateReference() {
 }
 
 
-// ------------------------------
-// SOURCE BUTTONS
-// ------------------------------
+// SOURCE BUTTONS //
+
 function setupSourceButtons() {
     const buttons = document.querySelectorAll(".source-btn");
 
@@ -186,9 +182,8 @@ function setupSourceButtons() {
 }
 
 
-// ------------------------------
-// ACTION BUTTONS
-// ------------------------------
+// ACTION BUTTONS //
+
 function setupActionButtons() {
     const copyBtn = document.getElementById("copy-btn");
     const clearBtn = document.getElementById("clear-btn");
@@ -235,9 +230,8 @@ function setupActionButtons() {
 }
 
 
-// ------------------------------
-// COPY ALL REFERENCES
-// ------------------------------
+// COPY ALL REFERENCES //
+
 function setupCopyAllButton() {
     const btn = document.getElementById("copy-all-btn");
     if (!btn) return;
@@ -266,9 +260,8 @@ function setupCopyAllButton() {
 }
 
 
-// ------------------------------
-// SINGLE COMBINED REFERENCE LIST
-// ------------------------------
+// SINGLE COMBINED REFERENCE LIST //
+
 function renderReferenceList() {
     const container = document.getElementById("reference-list");
     container.innerHTML = "";
@@ -313,9 +306,8 @@ function renderReferenceList() {
 
 
 
-// ------------------------------
-// DOWNLOAD BUTTON
-// ------------------------------
+// DOWNLOAD BUTTON //
+
 function setupDownloadButton() {
     const btn = document.getElementById("download-btn");
 
@@ -366,9 +358,8 @@ function setupDownloadButton() {
 }
 
 
-// ------------------------------
-// INIT
-// ------------------------------
+// INIT //
+
 document.addEventListener("DOMContentLoaded", () => {
 
     const saved = localStorage.getItem("referenceList");
