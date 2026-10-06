@@ -4,10 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4ee72359-d157-4211-a528-5aa24299c747" name="Changes" comment="feat: merge history + reference list into unified Fluent-style reference manager&#10;Summary&#10;Replaced the separate History and Reference List components with a single, unified reference manager that behaves consistently, stores entries persistently, and aligns with Harvard referencing workflows.&#10;Key changes&#10;• Removed the History feature entirely (UI, JS logic, localStorage usage).&#10;• Introduced a single reference list with:&#10;&#9;◦ alphabetical ordering&#10;&#9;◦ click‑to‑restore behaviour&#10;&#9;◦ delete (×) control per entry&#10;&#9;◦ persistent storage via `referenceist&#10;&#9;◦ no numbering (Harvard‑compliant)&#10;• Updated `rendereferenceList() to use a flex layout and prevent the × from appearing inside the reference text.&#10;• Updated “Add to List”, “Copy All”, and “Download” logic to use the unified list.&#10;• Cleaned up DOMContentLoaded initialisation to load only `referenceist.&#10;• Removed all history‑related CSS and replaced with Fluent‑style reference list styling.&#10;• Added new Fluent Light CSS for .reference-item, `.reference-text and .reference-delete.&#10;• Improved UI consistency across the app to match Fluent Light design.&#10;• Updated WebsiteFormatter to auto‑insert today’s date when “Date of access” is left blank.&#10;• Updated field label to “Date of access (current date unless changed)”.&#10;Result&#10;The referencing tool now has a cleaner, more intuitive workflow with a single, alphabetised reference list that feels native, consistent, and easier for users to manage. The UI is simpler, the codebase is cleaner, and the overall experience is more Fluent and professional.">
+    <list default="true" id="4ee72359-d157-4211-a528-5aa24299c747" name="Changes" comment="Working prototype&#10;Testing product">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/app.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/static/style.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/formatters/book_formatter.py" beforeDir="false" afterPath="$PROJECT_DIR$/formatters/book_formatter.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/formatters/journal_formatter.py" beforeDir="false" afterPath="$PROJECT_DIR$/formatters/journal_formatter.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/formatters/website_formatter.py" beforeDir="false" afterPath="$PROJECT_DIR$/formatters/website_formatter.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/index.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -21,6 +23,17 @@
         <option value="HTML File" />
         <option value="JavaScript File" />
       </list>
+    </option>
+  </component>
+  <component name="FlaskConsoleOptions" custom-start-script="import sys; print('Python %s on %s' % (sys.version, sys.platform)); sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;from flask.cli import ScriptInfo, NoAppException&#10;for module in [&quot;main.py&quot;, &quot;wsgi.py&quot;, &quot;app.py&quot;]:&#10;    try: locals().update(ScriptInfo(app_import_path=module, create_app=None).load_app().make_shell_context()); print(&quot;\nFlask App: %s&quot; % app.import_name); break&#10;    except NoAppException: pass">
+    <envs>
+      <env key="FLASK_APP" value="app" />
+    </envs>
+    <option name="myCustomStartScript" value="import sys; print('Python %s on %s' % (sys.version, sys.platform)); sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;from flask.cli import ScriptInfo, NoAppException&#10;for module in [&quot;main.py&quot;, &quot;wsgi.py&quot;, &quot;app.py&quot;]:&#10;    try: locals().update(ScriptInfo(app_import_path=module, create_app=None).load_app().make_shell_context()); print(&quot;\nFlask App: %s&quot; % app.import_name); break&#10;    except NoAppException: pass" />
+    <option name="myEnvs">
+      <map>
+        <entry key="FLASK_APP" value="app" />
+      </map>
     </option>
   </component>
   <component name="Git.Settings">
@@ -72,6 +85,7 @@
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;dev.micropythontools.configurable&quot;,
     &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
@@ -134,7 +148,13 @@
       <workItem from="1773236040263" duration="580000" />
       <workItem from="1773318399803" duration="799000" />
       <workItem from="1774454783578" duration="92000" />
-      <workItem from="1776342040982" duration="372000" />
+      <workItem from="1776342040982" duration="722000" />
+      <workItem from="1776343078118" duration="6349000" />
+      <workItem from="1777470963785" duration="133000" />
+      <workItem from="1779112807763" duration="4110000" />
+      <workItem from="1782932494517" duration="690000" />
+      <workItem from="1782981552475" duration="2536000" />
+      <workItem from="1790582249659" duration="3987000" />
     </task>
     <task id="LOCAL-00001" summary="Initial commit of Harvard referencing tool Flask version">
       <option name="closed" value="true" />
@@ -152,7 +172,15 @@
       <option name="project" value="LOCAL" />
       <updated>1772125779444</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Working prototype&#10;Testing product">
+      <option name="closed" value="true" />
+      <created>1776342547955</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1776342547955</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -161,21 +189,11 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Initial commit of Harvard referencing tool Flask version" />
     <MESSAGE value="feat: merge history + reference list into unified Fluent-style reference manager&#10;Summary&#10;Replaced the separate History and Reference List components with a single, unified reference manager that behaves consistently, stores entries persistently, and aligns with Harvard referencing workflows.&#10;Key changes&#10;• Removed the History feature entirely (UI, JS logic, localStorage usage).&#10;• Introduced a single reference list with:&#10;&#9;◦ alphabetical ordering&#10;&#9;◦ click‑to‑restore behaviour&#10;&#9;◦ delete (×) control per entry&#10;&#9;◦ persistent storage via `referenceist&#10;&#9;◦ no numbering (Harvard‑compliant)&#10;• Updated `rendereferenceList() to use a flex layout and prevent the × from appearing inside the reference text.&#10;• Updated “Add to List”, “Copy All”, and “Download” logic to use the unified list.&#10;• Cleaned up DOMContentLoaded initialisation to load only `referenceist.&#10;• Removed all history‑related CSS and replaced with Fluent‑style reference list styling.&#10;• Added new Fluent Light CSS for .reference-item, `.reference-text and .reference-delete.&#10;• Improved UI consistency across the app to match Fluent Light design.&#10;• Updated WebsiteFormatter to auto‑insert today’s date when “Date of access” is left blank.&#10;• Updated field label to “Date of access (current date unless changed)”.&#10;Result&#10;The referencing tool now has a cleaner, more intuitive workflow with a single, alphabetised reference list that feels native, consistent, and easier for users to manage. The UI is simpler, the codebase is cleaner, and the overall experience is more Fluent and professional." />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: merge history + reference list into unified Fluent-style reference manager&#10;Summary&#10;Replaced the separate History and Reference List components with a single, unified reference manager that behaves consistently, stores entries persistently, and aligns with Harvard referencing workflows.&#10;Key changes&#10;• Removed the History feature entirely (UI, JS logic, localStorage usage).&#10;• Introduced a single reference list with:&#10;&#9;◦ alphabetical ordering&#10;&#9;◦ click‑to‑restore behaviour&#10;&#9;◦ delete (×) control per entry&#10;&#9;◦ persistent storage via `referenceist&#10;&#9;◦ no numbering (Harvard‑compliant)&#10;• Updated `rendereferenceList() to use a flex layout and prevent the × from appearing inside the reference text.&#10;• Updated “Add to List”, “Copy All”, and “Download” logic to use the unified list.&#10;• Cleaned up DOMContentLoaded initialisation to load only `referenceist.&#10;• Removed all history‑related CSS and replaced with Fluent‑style reference list styling.&#10;• Added new Fluent Light CSS for .reference-item, `.reference-text and .reference-delete.&#10;• Improved UI consistency across the app to match Fluent Light design.&#10;• Updated WebsiteFormatter to auto‑insert today’s date when “Date of access” is left blank.&#10;• Updated field label to “Date of access (current date unless changed)”.&#10;Result&#10;The referencing tool now has a cleaner, more intuitive workflow with a single, alphabetised reference list that feels native, consistent, and easier for users to manage. The UI is simpler, the codebase is cleaner, and the overall experience is more Fluent and professional." />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/app.py</url>
-          <line>12</line>
-          <option name="timeStamp" value="9" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
+    <MESSAGE value="Working prototype&#10;Testing product" />
+    <option name="LAST_COMMIT_MESSAGE" value="Working prototype&#10;Testing product" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/Harvard_Referencing_Flask$FlaskApp.coverage" NAME="FlaskApp Coverage Results" MODIFIED="1776342042033" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Harvard_Referencing_Flask$FlaskApp.coverage" NAME="FlaskApp Coverage Results" MODIFIED="1791277517132" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Harvard_Referencing_Flask$app.coverage" NAME="app Coverage Results" MODIFIED="1772193637680" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

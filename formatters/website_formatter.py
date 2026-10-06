@@ -4,6 +4,10 @@ from .base_formatter import BaseFormatter
 class WebsiteFormatter(BaseFormatter):
     """Formatter for website references using Harvard rules."""
 
+    def remove_trailing_full_stop(self, text: str) -> str:
+        """Ensure organisation names do not end with a full stop."""
+        return text.rstrip().rstrip(".")
+
     def format(self, data: dict) -> str:
         # Extract fields
         raw_authors = data.get("author", "") or data.get("authors", "")
@@ -17,8 +21,13 @@ class WebsiteFormatter(BaseFormatter):
         if not accessed:
             accessed = datetime.now().strftime("%-d %B %Y")
 
-        # Format author(s)
-        authors = self.format_author_string(raw_authors)
+        # --- Handle author or organisation-as-author ---
+        if raw_authors.strip():
+            # Personal author(s)
+            authors = self.format_author_string(raw_authors)
+        else:
+            # No personal author → use organisation name (no trailing full stop)
+            authors = self.remove_trailing_full_stop(website_name.strip())
 
         # Format title (sentence case + single quotes)
         title = f"‘{self.sentence_case(title)}’"
@@ -26,7 +35,7 @@ class WebsiteFormatter(BaseFormatter):
         # Italicise website name
         website_name = self.italic(website_name)
 
-        # Build reference
+        # Build reference (IMPORTANT: no full stop after authors)
         parts = [
             f"{authors} ({year}) {title},",
             f"{website_name}.",

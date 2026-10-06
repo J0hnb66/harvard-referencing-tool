@@ -3,6 +3,10 @@ from .base_formatter import BaseFormatter
 class JournalFormatter(BaseFormatter):
     """Formatter for journal article references using Harvard rules."""
 
+    def remove_trailing_full_stop(self, text: str) -> str:
+        """Ensure organisation names do not end with a full stop."""
+        return text.rstrip().rstrip(".")
+
     def format(self, data: dict) -> str:
         # --- Extract fields ---
         raw_authors = data.get("author", "") or data.get("authors", "")
@@ -15,8 +19,12 @@ class JournalFormatter(BaseFormatter):
         url = data.get("url", "")
         accessed = data.get("accessed", "")
 
-        # --- Format authors ---
-        authors = self.format_author_string(raw_authors)
+        # --- Handle personal vs corporate authors ---
+        if raw_authors.strip():
+            authors = self.format_author_string(raw_authors)
+        else:
+            # No personal author → use journal title as corporate author
+            authors = self.remove_trailing_full_stop(journal.strip())
 
         # --- Format title (sentence case + single quotes) ---
         title = f"‘{self.sentence_case(title)}’"
@@ -41,7 +49,7 @@ class JournalFormatter(BaseFormatter):
         # --- Accessed date ---
         accessed_part = f"(Accessed: {accessed})" if accessed else ""
 
-        # --- Build final reference ---
+        # --- Build final reference (no full stop after authors) ---
         parts = [
             f"{authors} ({year}) {title},",
             f"{journal},",
